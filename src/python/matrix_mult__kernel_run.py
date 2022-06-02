@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Summary: Kernel tuner testing, kernel run
-    
-Description: 
-    Simple test to check if the CUDA kernel runs within the kernel tuner.
-    
--------------------------------------------------------------------------------    
+Summary: Kernel tuner testing: kernel run
+
+Description:
+    Simple test to check if the CUDA kernels run within the kernel tuner.
+    Tests the different version of the matrix multiplication CUDA kernels
+    that implement D = A @ B (using numpy notation).
+
+-------------------------------------------------------------------------------
 Created on Fri May 27 12:31:11 2022
 @author: apalha
 """
@@ -30,18 +32,19 @@ n_columns_D = n_columns_B
 
 
 # %% Generate arrays
-A = 1000.0*numpy.random.rand(n_rows_A, n_columns_A) + 100.0
-B = 1000.0*numpy.random.rand(n_rows_B, n_columns_B) + 100.0
+A = numpy.random.rand(n_rows_A, n_columns_A)
+B = numpy.random.rand(n_rows_B, n_columns_B)
 D_output = numpy.zeros([n_rows_D, n_columns_D])
 
 
 # %% Expected result
 D = A @ B
 
+# %% Kernel runs
 
-# %% Setup kernel run
-kernel_name = "matrix_matrix_multiplication_gpu"
-kernel_source = "matrix_matrix_multiplication_gpu.cu" 
+# %% Setup kernel run for naive matrix multiplication algorithm
+kernel_name = "matrix_mult_naive"
+kernel_source = "matrix_mult_naive.cu" 
 
 problem_size = (n_columns_D, n_rows_D)
 
@@ -63,7 +66,7 @@ print("Max error in D:" + str(error_D))
 print("Done")
 
 
-# %% Setup optimized kernel run                                                                                                                                 
+# %% Setup optimized kernel run
 kernel_name = "matrix_matrix_multiplication_gpu_optimized"
 kernel_source = "matrix_matrix_multiplication_gpu_optimized.cu"
 
