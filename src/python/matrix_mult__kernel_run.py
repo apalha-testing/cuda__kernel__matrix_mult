@@ -32,38 +32,68 @@ n_columns_D = n_columns_B
 
 
 # %% Generate arrays
-A = numpy.random.rand(n_rows_A, n_columns_A)
-B = numpy.random.rand(n_rows_B, n_columns_B)
-D_output = numpy.zeros([n_rows_D, n_columns_D])
+# Double precision
+A_double = numpy.random.rand(n_rows_A, n_columns_A)
+B_double = numpy.random.rand(n_rows_B, n_columns_B)
+D_double_kernel = numpy.zeros([n_rows_D, n_columns_D])
 
+# Single precision
+A_single = A_double.astype(numpy.float32)
+B_single = B_double.astype(numpy.float32)
+D_single_kernel = D_double_kernel.astype(numpy.float32)
 
 # %% Expected result
-D = A @ B
+D_double = A_double @ B_double
+D_single = A_single @ B_single
+
 
 # %% Kernel runs
 
-# %% Setup kernel run for naive matrix multiplication algorithm
-kernel_name = "matrix_mult_naive"
-kernel_source = "matrix_mult_naive.cu" 
+# %% Naive matrix multiplication algorithm (double precision)
+# Setup kernel
+kernel_name = "matrix_mult_naive_double"
+kernel_source = "../cu/matrix_mult_naive_double.cu" 
 
 problem_size = (n_columns_D, n_rows_D)
 
-arguments = [D_output, A, B, n_columns_A, n_columns_D, n_rows_D]
+arguments = [D_double_kernel, A_double, B_double, n_columns_A, n_columns_D, n_rows_D]
 
 params = dict()
-params["block_size_x"] = 2
-params["block_size_y"] = 512
+params["block_size_x"] = 32
+params["block_size_y"] = 32
 
-
-# %% Run kernel
-print('\n   Running naive algorithm (double precision)...')
+# Run kernel
+print('\nRunning naive matrix multiplication algorithm (double precision)...')
 answer = run_kernel(kernel_name, kernel_source, problem_size, arguments, params)
 
-error_D = numpy.abs(answer[0] - D).max()
+error_D = numpy.abs(answer[0] - D_double).max()
 
-print("Max error in D:" + str(error_D))
-
+print("   Max error in D:" + str(error_D))
 print("Done")
+
+
+# %% Naive matrix multiplication algorithm (single precision)
+# Setup kernel
+kernel_name = "matrix_mult_naive_single"
+kernel_source = "../cu/matrix_mult_naive_single.cu"
+
+problem_size = (n_columns_D, n_rows_D)
+
+arguments = [D_single_kernel, A_single, B_single, n_columns_A, n_columns_D, n_rows_D]
+
+params = dict()
+params["block_size_x"] = 32
+params["block_size_y"] = 32
+
+# Run kernel
+print('\nRunning naive matrix multiplication algorithm (single precision)...')
+answer = run_kernel(kernel_name, kernel_source, problem_size, arguments, params)
+
+error_D = numpy.abs(answer[0] - D_single).max()
+
+print("   Max error in D:" + str(error_D))
+print("Done")
+
 
 
 # %% Setup optimized kernel run

@@ -10,7 +10,7 @@
 
 module load cuda11.1/toolkit/11.1.1
 
-cd /home/apalha/dev/testing/cuda/dg_acoustics/a_b_kernel/
+cd /home/apalha/dev/apalha-testing/cuda/kernel/matrix_mult/src/python
 
 echo "Initializing conda"
 __conda_setup="$('/home/apalha/miniforge3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
@@ -30,11 +30,6 @@ conda activate kernel_tuner
 
 echo ""
 echo ""
-echo "Running example benchmark"
-./matrixmult_cuda/matrixmul
-
-echo ""
-echo ""
 echo ""
 echo "Running kernel tuner in run mode"
-python3 a_b_cuda_kernel.py
+python3 matrix_mult__kernel_run.py
