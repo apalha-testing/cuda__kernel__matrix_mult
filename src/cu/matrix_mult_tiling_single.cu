@@ -10,10 +10,10 @@
 /** Main entry point.
  * Computes matrix multiplication using tiling algorithm (double precision)
  */
-__global__ void matrix_mult_tiling_double( 
-                      double * D, 
-                      const double * A, 
-                      const double * B, 
+__global__ void matrix_mult_tiling_single( 
+                      float * D, 
+                      const float * A, 
+                      const float * B, 
                       const unsigned int w_A_h_B,
                       const unsigned int w_B,
                       const unsigned int h_A) {
@@ -29,8 +29,8 @@ __global__ void matrix_mult_tiling_double(
 
     // Declaration of the shared memory array to store
     // sub-arrays A_tile and B_tile of A and B, respectively
-    __shared__ double A_tile[TILE_SIZE][TILE_SIZE];
-    __shared__ double B_tile[TILE_SIZE][TILE_SIZE];
+    __shared__ float A_tile[TILE_SIZE][TILE_SIZE];
+    __shared__ float B_tile[TILE_SIZE][TILE_SIZE];
 
     // Tile indices for array A
     // Start indices for sub-arrays of each block, maximum index, and step
@@ -50,7 +50,7 @@ __global__ void matrix_mult_tiling_double(
     // to the thread computation of the product between a row of A
     // and a column of B
     // This value accumulates over the tiles covered by the block
-    double D_sub = 0;
+    float D_sub = 0;
 
     
     // Loop over the sub-arrays of A (over the columns) and B (over the rows)

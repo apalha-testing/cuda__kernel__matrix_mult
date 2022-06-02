@@ -91,18 +91,18 @@ answer = run_kernel(kernel_name, kernel_source, problem_size, arguments, params)
 
 error_D = numpy.abs(answer[0] - D_single).max()
 
-print("   Max error in D:" + str(error_D))
+print("    Max error in D:" + str(error_D))
 print("Done")
 
 
-
-# %% Setup optimized kernel run
-kernel_name = "matrix_matrix_multiplication_gpu_optimized"
-kernel_source = "matrix_matrix_multiplication_gpu_optimized.cu"
+# %% Tiling matrix multiplication algorithm (double precision)
+# Setup kernel
+kernel_name = "matrix_mult_tiling_double"
+kernel_source = "../cu/matrix_mult_tiling_double.cu"
 
 problem_size = (n_columns_D, n_rows_D)
 
-arguments = [D_output, A, B, n_columns_A, n_columns_B, n_rows_A]
+arguments = [D_double_kernel, A_double, B_double, n_columns_A, n_columns_B, n_rows_A]
 
 params = dict()
 params["block_size_x"] = 8
@@ -110,28 +110,24 @@ params["block_size_y"] = 8
 params["TILE_SIZE"] = params["block_size_x"]
 
 # %% Run kernel
-print('\n   Running optimized algorithm (double precision)...')
+print('\nRunning tiling algorithm (double precision)...')
 answer = run_kernel(kernel_name, kernel_source, problem_size, arguments, params)
 
-error_D = numpy.abs(answer[0] - D).max()
+error_D = numpy.abs(answer[0] - D_double).max()
 
-print("Max error in D:" + str(error_D))
+print("    Max error in D:" + str(error_D))
 
 print("Done")
 
 
-
-# %% Setup optimized kernel run (single precision)
-kernel_name = "matrix_matrix_multiplication_gpu_optimized_single"
-kernel_source = "matrix_matrix_multiplication_gpu_optimized_single.cu"
+# %% Tiling matrix multiplication algorithm (single precision)
+# Setup kernel
+kernel_name = "matrix_mult_tiling_single"
+kernel_source = "../cu/matrix_mult_tiling_single.cu"
 
 problem_size = (n_columns_D, n_rows_D)
 
-A_single = A.astype(numpy.float32)
-B_single = B.astype(numpy.float32)
-D_output_single = D_output.astype(numpy.float32)
-
-arguments = [D_output_single, A_single, B_single, n_columns_A, n_columns_B, n_rows_A]
+arguments = [D_single_kernel, A_single, B_single, n_columns_A, n_columns_B, n_rows_A]
 
 params = dict()
 params["block_size_x"] = 8
@@ -139,14 +135,15 @@ params["block_size_y"] = 8
 params["TILE_SIZE"] = params["block_size_x"]
 
 # %% Run kernel
-print('\n   Running optimized algorithm (single precision)...')
+print('\nRunning tiling algorithm (single precision)...')
 answer = run_kernel(kernel_name, kernel_source, problem_size, arguments, params)
 
-error_D = numpy.abs(answer[0] - A_single @ B_single).max()
+error_D = numpy.abs(answer[0] - D_single).max()
 
-print("Max error in D:" + str(error_D))
+print("    Max error in D:" + str(error_D))
 
 print("Done")
+
 
 
 # %% Setup optimized kernel run 2 (double precision)
