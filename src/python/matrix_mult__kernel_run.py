@@ -14,13 +14,14 @@ Created on Fri May 27 12:31:11 2022
 """
 
 import numpy
-from kernel_tuner import run_kernel
+import kernel_tuner
+from collections import OrderedDict
 
 
 # %% Input parameters
-n_columns_A = numpy.uint32(128)  # number of columns of A and rows of B
-n_rows_A = numpy.uint32(128)  # number of rows of C (and rows of A)
-n_columns_B = numpy.uint32(16384)  # number of columns of C (and columns of B)
+n_columns_A = numpy.uint32(2048) #128)  # number of columns of A and rows of B
+n_rows_A = numpy.uint32(1024)#128)  # number of rows of C (and rows of A)
+n_columns_B = numpy.uint32(4096)#16384)  # number of columns of C (and columns of B)
 n_iterations = numpy.uint32(100)  # number of times to perform the timing operation for averaging
 
 
@@ -65,7 +66,7 @@ params["block_size_y"] = 32
 # Run kernel
 print('\n---------------------------------------------------------------------')
 print('Running naive matrix multiplication algorithm (double precision)...')
-answer = run_kernel(kernel_name, kernel_source, problem_size, arguments, params)
+answer = kernel_tuner.run_kernel(kernel_name, kernel_source, problem_size, arguments, params)
 
 error_D = numpy.abs(answer[0] - D_double).max()
 
@@ -89,7 +90,7 @@ params["block_size_y"] = 32
 # Run kernel
 print('\n---------------------------------------------------------------------')
 print('Running naive matrix multiplication algorithm (single precision)...')
-answer = run_kernel(kernel_name, kernel_source, problem_size, arguments, params)
+answer = kernel_tuner.run_kernel(kernel_name, kernel_source, problem_size, arguments, params)
 
 error_D = numpy.abs(answer[0] - D_single).max()
 
@@ -114,7 +115,7 @@ params["TILE_SIZE"] = params["block_size_x"]
 # %% Run kernel
 print('\n---------------------------------------------------------------------')
 print('Running tiling algorithm (double precision)...')
-answer = run_kernel(kernel_name, kernel_source, problem_size, arguments, params)
+answer = kernel_tuner.run_kernel(kernel_name, kernel_source, problem_size, arguments, params)
 
 error_D = numpy.abs(answer[0] - D_double).max()
 
@@ -140,7 +141,7 @@ params["TILE_SIZE"] = params["block_size_x"]
 # %% Run kernel
 print('\n---------------------------------------------------------------------')
 print('Running tiling algorithm (single precision)...')
-answer = run_kernel(kernel_name, kernel_source, problem_size, arguments, params)
+answer = kernel_tuner.run_kernel(kernel_name, kernel_source, problem_size, arguments, params)
 
 error_D = numpy.abs(answer[0] - D_single).max()
 
@@ -169,7 +170,7 @@ grid_div_y = ["TILE_SIZE"]
 # %% Run kernel
 print('\n---------------------------------------------------------------------')
 print('Running tiling algorithm optimization 1 (double precision)...')
-answer = run_kernel(kernel_name, kernel_source, problem_size, arguments, params, grid_div_x = grid_div_x, grid_div_y = grid_div_y)
+answer = kernel_tuner.run_kernel(kernel_name, kernel_source, problem_size, arguments, params, grid_div_x = grid_div_x, grid_div_y = grid_div_y)
 
 error_D = numpy.abs(answer[0] - D_double).max()
 
@@ -198,7 +199,7 @@ grid_div_y = ["TILE_SIZE"]
 # %% Run kernel
 print('\n---------------------------------------------------------------------')
 print('Running tiling algorithm optimization 1 (single precision)...')
-answer = run_kernel(kernel_name, kernel_source, problem_size, arguments, params, grid_div_x = grid_div_x, grid_div_y = grid_div_y)
+answer = kernel_tuner.run_kernel(kernel_name, kernel_source, problem_size, arguments, params, grid_div_x = grid_div_x, grid_div_y = grid_div_y)
 
 error_D = numpy.abs(answer[0] - D_single).max()
 
@@ -229,7 +230,7 @@ grid_div_y = ["TILE_SIZE"]
 # %% Run kernel
 print('\n---------------------------------------------------------------------')
 print('Running tiling algorithm optimization 2 (double precision)...')
-answer = run_kernel(kernel_name, kernel_source, problem_size, arguments, params, grid_div_x = grid_div_x, grid_div_y = grid_div_y)
+answer = kernel_tuner.run_kernel(kernel_name, kernel_source, problem_size, arguments, params, grid_div_x = grid_div_x, grid_div_y = grid_div_y)
 
 error_D = numpy.abs(answer[0] - D_double).max()
 
@@ -259,7 +260,39 @@ grid_div_y = ["TILE_SIZE"]
 # %% Run kernel
 print('\n---------------------------------------------------------------------')
 print('Running tiling algorithm optimization 2 (single precision)...')
-answer = run_kernel(kernel_name, kernel_source, problem_size, arguments, params, grid_div_x = grid_div_x, grid_div_y = grid_div_y)
+answer = kernel_tuner.run_kernel(kernel_name, kernel_source, problem_size, arguments, params, grid_div_x = grid_div_x, grid_div_y = grid_div_y)
+
+error_D = numpy.abs(answer[0] - D_single).max()
+
+print("    Max error in D:" + str(error_D))
+
+print("Done")
+print('---------------------------------------------------------------------\n')
+
+
+# %% Tiling matrix multiplication algorithm (from bvanwerkhoven, adapted for rectangular matrices) (single precision)
+# Setup kernel
+kernel_name = "matrix_mult_bvanwerkhoven_rectangular_single"
+kernel_source = "../cu/matrix_mult_bvanwerkhoven_rectangular_single.cu"
+
+problem_size = (n_columns_D, n_rows_D)
+
+arguments = [D_single_kernel, A_single, B_single, n_columns_A, n_columns_B, n_rows_A]
+
+params = dict()
+params["block_size_x"] = 32
+params["block_size_y"] = 4
+
+params["tile_size_x"] = 8
+params["tile_size_y"] = 8
+
+grid_div_x = ["block_size_x", "tile_size_x"]
+grid_div_y = ["block_size_y", "tile_size_y"]
+
+# %% Run kernel
+print('\n---------------------------------------------------------------------')
+print('Running tiling algorithm optimization 2 (single precision)...')
+answer = kernel_tuner.run_kernel(kernel_name, kernel_source, problem_size, arguments, params, grid_div_x = grid_div_x, grid_div_y = grid_div_y)
 
 error_D = numpy.abs(answer[0] - D_single).max()
 
