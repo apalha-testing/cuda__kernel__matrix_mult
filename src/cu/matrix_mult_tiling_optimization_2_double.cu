@@ -1,7 +1,7 @@
 /**
- * @file matrix_matrix_multiplication_gpu_optimized.cu
+ * @file mattrix_mult_tiling_optimization_2_double.cu
  * 
- * CUDA code to calculate D = A*B (optimized)
+ * CUDA code to calculate D = A*B (optimization 2 adding loop unroll, double precision)
  * 
  */
 
@@ -10,13 +10,12 @@
 // #define TILE_SIZE 32
 
 /** Main entry point.
- * Works out where the current thread should read/write to global memory
- * and calls doIterations to do the actual work.
+ * Kernel for matrix multiplication adding loop unroll on top of optimization 1 (double precision).
  */
-__global__ void matrix_matrix_multiplication_gpu_optimized_3_single( 
-                      float * D, 
-                      float * A, 
-                      float * B, 
+__global__ void matrix_mult_tiling_optimization_2_double( 
+                      double * D, 
+                      double * A, 
+                      double * B, 
                       const unsigned int w_A_h_B,
                       const unsigned int w_B,
                       const unsigned int h_A) {
@@ -33,7 +32,7 @@ __global__ void matrix_matrix_multiplication_gpu_optimized_3_single(
 
     // Declaration of the shared memory array to store
     // sub-array A_tile
-    __shared__ float A_tile[TILE_SIZE * TILE_SIZE];
+    __shared__ double A_tile[TILE_SIZE * TILE_SIZE];
 
     // Tile indices for array A
     // Start indices for sub-arrays of each block, maximum index, and step
@@ -53,7 +52,7 @@ __global__ void matrix_matrix_multiplication_gpu_optimized_3_single(
     
     // Contains the elements of output array D associated to the block, but for a column
     // This is per thread
-    float D_v[TILE_SIZE] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    double D_v[TILE_SIZE] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     
     // Loop over the sub-arrays of A (over the columns) and B (over the rows)
     // required to compute the block sub-array D
@@ -70,8 +69,8 @@ __global__ void matrix_matrix_multiplication_gpu_optimized_3_single(
         // load one element of each array
         __syncthreads();
 
-	float *A_p = &A[a_idx + w_A_h_B * ty + tx];
-	float *A_tile_p = &A_tile[ty + TILE_SIZE * tx];
+	double *A_p = &A[a_idx + w_A_h_B * ty + tx];
+	double *A_tile_p = &A_tile[ty + TILE_SIZE * tx];
 #pragma unroll
 	for (int n = 0; n < 16; n += 4){
 	    A_tile_p[n] = A_p[w_A_h_B *n];
@@ -86,11 +85,11 @@ __global__ void matrix_matrix_multiplication_gpu_optimized_3_single(
 	// all the elements in the column of B. Each thread takes care of a columns of B,
 	// therefore the end product for each column is a column of C_tile.
 	A_p = &A_tile[0];
-	float *B_p = &B[b_idx + TILE_SIZE * ty + tx];  // threads go over the columns of B and iterate over rows
+	double *B_p = &B[b_idx + TILE_SIZE * ty + tx];  // threads go over the columns of B and iterate over rows
 
 #pragma unroll
 	for (int k = 0; k < TILE_SIZE; k++){
-	    float bv = B_p[0];
+	    double bv = B_p[0];
 
 	    D_v[0] += A_p[0] * bv;
 	    D_v[1] += A_p[1] * bv;
@@ -120,7 +119,7 @@ __global__ void matrix_matrix_multiplication_gpu_optimized_3_single(
 
     // Write the block sub-array to the device memory into the
     // result array D, each thread writes one column of the sub-array
-    float *D_p = &D[c_begin];
+    double *D_p = &D[c_begin];
     D_p += TILE_SIZE * ty + tx;
     int c_step = w_B;
     // Then, each thread loops over the rows of the tile of D
