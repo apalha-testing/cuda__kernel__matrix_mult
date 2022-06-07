@@ -3,7 +3,7 @@
 #SBATCH -N 1
 #SBATCH --ntasks-per-node=16
 #SBATCH -C A4000
-#sasasSBATCH -p fatq
+#asasSBATCH -p fatq
 
 . /etc/bashrc
 . /etc/profile.d/lmod.sh

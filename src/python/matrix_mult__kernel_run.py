@@ -36,12 +36,10 @@ n_columns_D = n_columns_B
 # Double precision
 A_double = numpy.random.rand(n_rows_A, n_columns_A)
 B_double = numpy.random.rand(n_rows_B, n_columns_B)
-D_double_kernel = numpy.zeros([n_rows_D, n_columns_D])
 
 # Single precision
 A_single = A_double.astype(numpy.float32)
 B_single = B_double.astype(numpy.float32)
-D_single_kernel = D_double_kernel.astype(numpy.float32)
 
 # %% Expected result
 D_double = A_double @ B_double
@@ -57,6 +55,7 @@ kernel_source = "../cu/matrix_mult_naive_double.cu"
 
 problem_size = (n_columns_D, n_rows_D)
 
+D_double_kernel = numpy.zeros([n_rows_D, n_columns_D])
 arguments = [D_double_kernel, A_double, B_double, n_columns_A, n_columns_D, n_rows_D]
 
 params = dict()
@@ -81,6 +80,7 @@ kernel_source = "../cu/matrix_mult_naive_single.cu"
 
 problem_size = (n_columns_D, n_rows_D)
 
+D_single_kernel = numpy.zeros([n_rows_D, n_columns_D]).astype(numpy.float32)
 arguments = [D_single_kernel, A_single, B_single, n_columns_A, n_columns_D, n_rows_D]
 
 params = dict()
@@ -105,6 +105,7 @@ kernel_source = "../cu/matrix_mult_tiling_double.cu"
 
 problem_size = (n_columns_D, n_rows_D)
 
+D_double_kernel = numpy.zeros([n_rows_D, n_columns_D])
 arguments = [D_double_kernel, A_double, B_double, n_columns_A, n_columns_B, n_rows_A]
 
 params = dict()
@@ -131,6 +132,7 @@ kernel_source = "../cu/matrix_mult_tiling_single.cu"
 
 problem_size = (n_columns_D, n_rows_D)
 
+D_single_kernel = numpy.zeros([n_rows_D, n_columns_D]).astype(numpy.float32)
 arguments = [D_single_kernel, A_single, B_single, n_columns_A, n_columns_B, n_rows_A]
 
 params = dict()
@@ -157,6 +159,7 @@ kernel_source = "../cu/matrix_mult_tiling_optimization_1_double.cu"
 
 problem_size = (n_columns_D, n_rows_D)
 
+D_double_kernel = numpy.zeros([n_rows_D, n_columns_D])
 arguments = [D_double_kernel, A_double, B_double, n_columns_A, n_columns_B, n_rows_A]
 
 params = dict()
@@ -186,6 +189,7 @@ kernel_source = "../cu/matrix_mult_tiling_optimization_1_single.cu"
 
 problem_size = (n_columns_D, n_rows_D)
 
+D_single_kernel = numpy.zeros([n_rows_D, n_columns_D]).astype(numpy.float32)
 arguments = [D_single_kernel, A_single, B_single, n_columns_A, n_columns_B, n_rows_A]
 
 params = dict()
@@ -217,6 +221,7 @@ kernel_source = "../cu/matrix_mult_tiling_optimization_2_double.cu"
 
 problem_size = (n_columns_D, n_rows_D)
 
+D_double_kernel = numpy.zeros([n_rows_D, n_columns_D])
 arguments = [D_double_kernel, A_double, B_double, n_columns_A, n_columns_B, n_rows_A]
 
 params = dict()
@@ -247,6 +252,7 @@ kernel_source = "../cu/matrix_mult_tiling_optimization_2_single.cu"
 
 problem_size = (n_columns_D, n_rows_D)
 
+D_single_kernel = numpy.zeros([n_rows_D, n_columns_D]).astype(numpy.float32)
 arguments = [D_single_kernel, A_single, B_single, n_columns_A, n_columns_B, n_rows_A]
 
 params = dict()
@@ -270,6 +276,43 @@ print("Done")
 print('---------------------------------------------------------------------\n')
 
 
+# %% Tiling matrix multiplication algorithm (from bvanwerkhoven, adapted for rectangular matrices) (double precision)
+# Setup kernel
+kernel_name = "matrix_mult_bvanwerkhoven_rectangular_double"
+kernel_source = "../cu/matrix_mult_bvanwerkhoven_rectangular_double.cu"
+
+problem_size = (n_columns_D, n_rows_D)
+
+D_double_kernel = numpy.zeros([n_rows_D, n_columns_D])
+arguments = [D_double_kernel, A_double, B_double, n_columns_A, n_columns_B, n_rows_A]
+
+params = dict()
+params["block_size_x"] = 16
+params["block_size_y"] = 8
+
+params["tile_size_x"] = 8
+params["tile_size_y"] = 2
+
+grid_div_x = ["block_size_x", "tile_size_x"]
+grid_div_y = ["block_size_y", "tile_size_y"]
+
+# %% Run kernel
+print('\n---------------------------------------------------------------------')
+print('Running tiling algorithm rectangle bvanwerkhoven (double precision)...')
+answer = kernel_tuner.run_kernel(kernel_name, kernel_source, problem_size, arguments, params, grid_div_x = grid_div_x, grid_div_y = grid_div_y)
+
+error_D_max = numpy.abs(answer[0] - D_double).max()
+error_D_min = numpy.abs(answer[0] - D_double).min()
+error_D_sum = numpy.abs(answer[0] - D_double).sum()
+
+print("    Max error in D:" + str(error_D_max))
+print("    Min error in D:" + str(error_D_min))
+print("    Sum error in D:" + str(error_D_sum))
+
+print("Done")
+print('---------------------------------------------------------------------\n')
+
+
 # %% Tiling matrix multiplication algorithm (from bvanwerkhoven, adapted for rectangular matrices) (single precision)
 # Setup kernel
 kernel_name = "matrix_mult_bvanwerkhoven_rectangular_single"
@@ -277,26 +320,31 @@ kernel_source = "../cu/matrix_mult_bvanwerkhoven_rectangular_single.cu"
 
 problem_size = (n_columns_D, n_rows_D)
 
+D_single_kernel = numpy.zeros([n_rows_D, n_columns_D]).astype(numpy.float32)
 arguments = [D_single_kernel, A_single, B_single, n_columns_A, n_columns_B, n_rows_A]
 
 params = dict()
 params["block_size_x"] = 32
-params["block_size_y"] = 4
+params["block_size_y"] = 8
 
 params["tile_size_x"] = 8
-params["tile_size_y"] = 8
+params["tile_size_y"] = 4
 
 grid_div_x = ["block_size_x", "tile_size_x"]
 grid_div_y = ["block_size_y", "tile_size_y"]
 
 # %% Run kernel
 print('\n---------------------------------------------------------------------')
-print('Running tiling algorithm optimization 2 (single precision)...')
+print('Running tiling algorithm rectangle bvanwekhoven (single precision)...')
 answer = kernel_tuner.run_kernel(kernel_name, kernel_source, problem_size, arguments, params, grid_div_x = grid_div_x, grid_div_y = grid_div_y)
 
-error_D = numpy.abs(answer[0] - D_single).max()
+error_D_max = numpy.abs(answer[0] - D_single).max()
+error_D_min = numpy.abs(answer[0] - D_single).min()
+error_D_sum = numpy.abs(answer[0] - D_single).sum()
 
-print("    Max error in D:" + str(error_D))
+print("    Max error in D:" + str(error_D_max))
+print("    Min error in D:" + str(error_D_min))
+print("    Sum error in D:" + str(error_D_sum))
 
 print("Done")
 print('---------------------------------------------------------------------\n')

@@ -1,0 +1,251 @@
+Initializing conda
+Activating conda environment
+
+---------------------------------------------------------------------
+Running naive matrix multiplication algorithm (double precision)...
+Using: NVIDIA RTX A4000
+block_size_x=8, block_size_y=32, time=448.373ms, GFLOP/s=306.528
+block_size_x=8, block_size_y=16, time=464.383ms, GFLOP/s=295.960
+block_size_x=8, block_size_y=8, time=499.448ms, GFLOP/s=275.181
+block_size_x=16, block_size_y=32, time=433.048ms, GFLOP/s=317.376
+block_size_x=16, block_size_y=16, time=446.590ms, GFLOP/s=307.752
+block_size_x=16, block_size_y=8, time=478.749ms, GFLOP/s=287.079
+block_size_x=32, block_size_y=32, time=447.506ms, GFLOP/s=307.122
+block_size_x=32, block_size_y=16, time=447.237ms, GFLOP/s=307.307
+block_size_x=32, block_size_y=8, time=463.725ms, GFLOP/s=296.380
+best performing configuration:
+block_size_x=16, block_size_y=32, time=433.048ms, GFLOP/s=317.376
+Done
+---------------------------------------------------------------------
+
+
+---------------------------------------------------------------------
+Running naive matrix multiplication algorithm (single precision)...
+Using: NVIDIA RTX A4000
+block_size_x=8, block_size_y=32, time=167.000ms, GFLOP/s=822.986
+block_size_x=8, block_size_y=16, time=174.889ms, GFLOP/s=785.866
+block_size_x=8, block_size_y=8, time=190.022ms, GFLOP/s=723.281
+block_size_x=16, block_size_y=32, time=139.774ms, GFLOP/s=983.292
+block_size_x=16, block_size_y=16, time=160.759ms, GFLOP/s=854.936
+block_size_x=16, block_size_y=8, time=189.738ms, GFLOP/s=724.360
+block_size_x=32, block_size_y=32, time=140.083ms, GFLOP/s=981.127
+block_size_x=32, block_size_y=16, time=140.791ms, GFLOP/s=976.189
+block_size_x=32, block_size_y=8, time=163.960ms, GFLOP/s=838.248
+best performing configuration:
+block_size_x=16, block_size_y=32, time=139.774ms, GFLOP/s=983.292
+Done
+---------------------------------------------------------------------
+
+
+---------------------------------------------------------------------
+Running tiling algorithm (double precision)...
+Using: NVIDIA RTX A4000
+TILE_SIZE=4, block_size_x=4, block_size_y=4, time=1091.977ms, GFLOP/s=125.863
+TILE_SIZE=8, block_size_x=8, block_size_y=8, time=472.856ms, GFLOP/s=290.657
+TILE_SIZE=16, block_size_x=16, block_size_y=16, time=423.128ms, GFLOP/s=324.816
+TILE_SIZE=32, block_size_x=32, block_size_y=32, time=428.845ms, GFLOP/s=320.486
+best performing configuration:
+TILE_SIZE=16, block_size_x=16, block_size_y=16, time=423.128ms, GFLOP/s=324.816
+Done
+---------------------------------------------------------------------
+
+
+---------------------------------------------------------------------
+Running tiling algorithm (single precision)...
+Using: NVIDIA RTX A4000
+TILE_SIZE=4, block_size_x=4, block_size_y=4, time=692.060ms, GFLOP/s=198.594
+TILE_SIZE=8, block_size_x=8, block_size_y=8, time=183.430ms, GFLOP/s=749.273
+TILE_SIZE=16, block_size_x=16, block_size_y=16, time=132.470ms, GFLOP/s=1037.513
+TILE_SIZE=32, block_size_x=32, block_size_y=32, time=127.122ms, GFLOP/s=1081.154
+best performing configuration:
+TILE_SIZE=32, block_size_x=32, block_size_y=32, time=127.122ms, GFLOP/s=1081.154
+Done
+---------------------------------------------------------------------
+
+
+---------------------------------------------------------------------
+Running tiling algorithm optimization 1 (double precision)...
+Using: NVIDIA RTX A4000
+TILE_SIZE=16, block_size_x=16, block_size_y=4, VECTOR_SIZE=4, time=395.752ms, GFLOP/s=347.285
+best performing configuration:
+TILE_SIZE=16, block_size_x=16, block_size_y=4, VECTOR_SIZE=4, time=395.752ms, GFLOP/s=347.285
+Done
+---------------------------------------------------------------------
+
+
+---------------------------------------------------------------------
+Running tiling algorithm optimization 1 (single precision)...
+Using: NVIDIA RTX A4000
+TILE_SIZE=16, block_size_x=16, block_size_y=4, VECTOR_SIZE=4, time=66.663ms, GFLOP/s=2061.712
+best performing configuration:
+TILE_SIZE=16, block_size_x=16, block_size_y=4, VECTOR_SIZE=4, time=66.663ms, GFLOP/s=2061.712
+Done
+---------------------------------------------------------------------
+
+
+---------------------------------------------------------------------
+Running tiling algorithm optimization 2 (double precision)...
+Using: NVIDIA RTX A4000
+TILE_SIZE=16, block_size_x=16, block_size_y=4, VECTOR_SIZE=4, time=395.143ms, GFLOP/s=347.821
+best performing configuration:
+TILE_SIZE=16, block_size_x=16, block_size_y=4, VECTOR_SIZE=4, time=395.143ms, GFLOP/s=347.821
+Done
+---------------------------------------------------------------------
+
+
+---------------------------------------------------------------------
+Running tiling algorithm optimization 2 (single precision)...
+Using: NVIDIA RTX A4000
+TILE_SIZE=16, block_size_x=16, block_size_y=4, VECTOR_SIZE=4, time=67.564ms, GFLOPS/s=2034.209
+best performing configuration:
+TILE_SIZE=16, block_size_x=16, block_size_y=4, VECTOR_SIZE=4, time=67.564ms, GFLOPS/s=2034.209
+Done
+---------------------------------------------------------------------
+
+
+---------------------------------------------------------------------
+Running tiling bvanwerkhoven square matrix (single precision)...
+Using: NVIDIA RTX A4000
+block_size_x=16, block_size_y=2, tile_size_x=1, tile_size_y=8, time=86.385ms, GFLOP/s=1591.002
+block_size_x=16, block_size_y=2, tile_size_x=2, tile_size_y=8, time=57.143ms, GFLOP/s=2405.166
+block_size_x=16, block_size_y=2, tile_size_x=4, tile_size_y=8, time=44.055ms, GFLOP/s=3119.678
+block_size_x=16, block_size_y=2, tile_size_x=8, tile_size_y=8, time=40.986ms, GFLOP/s=3353.292
+block_size_x=16, block_size_y=4, tile_size_x=1, tile_size_y=4, time=92.942ms, GFLOP/s=1478.766
+block_size_x=16, block_size_y=4, tile_size_x=2, tile_size_y=4, time=62.417ms, GFLOP/s=2201.933
+block_size_x=16, block_size_y=4, tile_size_x=4, tile_size_y=4, time=46.928ms, GFLOP/s=2928.736
+block_size_x=16, block_size_y=4, tile_size_x=8, tile_size_y=4, time=38.596ms, GFLOP/s=3560.990
+block_size_x=16, block_size_y=8, tile_size_x=1, tile_size_y=2, time=106.425ms, GFLOP/s=1291.415
+block_size_x=16, block_size_y=8, tile_size_x=2, tile_size_y=2, time=75.511ms, GFLOP/s=1820.114
+block_size_x=16, block_size_y=8, tile_size_x=4, tile_size_y=2, time=59.787ms, GFLOP/s=2298.810
+block_size_x=16, block_size_y=8, tile_size_x=8, tile_size_y=2, time=51.591ms, GFLOP/s=2664.003
+block_size_x=16, block_size_y=16, tile_size_x=1, tile_size_y=1, time=133.627ms, GFLOP/s=1028.529
+block_size_x=16, block_size_y=16, tile_size_x=2, tile_size_y=1, time=100.862ms, GFLOP/s=1362.649
+block_size_x=16, block_size_y=16, tile_size_x=4, tile_size_y=1, time=84.477ms, GFLOP/s=1626.948
+block_size_x=16, block_size_y=16, tile_size_x=8, tile_size_y=1, time=75.434ms, GFLOP/s=1821.988
+block_size_x=32, block_size_y=4, tile_size_x=1, tile_size_y=8, time=71.629ms, GFLOP/s=1918.773
+block_size_x=32, block_size_y=4, tile_size_x=2, tile_size_y=8, time=45.554ms, GFLOP/s=3017.046
+block_size_x=32, block_size_y=4, tile_size_x=4, tile_size_y=8, time=31.162ms, GFLOP/s=4410.514
+block_size_x=32, block_size_y=4, tile_size_x=8, tile_size_y=8, time=24.418ms, GFLOP/s=5628.655
+block_size_x=32, block_size_y=8, tile_size_x=1, tile_size_y=4, time=77.503ms, GFLOP/s=1773.328
+block_size_x=32, block_size_y=8, tile_size_x=2, tile_size_y=4, time=50.497ms, GFLOP/s=2721.710
+block_size_x=32, block_size_y=8, tile_size_x=4, tile_size_y=4, time=36.872ms, GFLOP/s=3727.484
+block_size_x=32, block_size_y=8, tile_size_x=8, tile_size_y=4, time=28.963ms, GFLOP/s=4745.265
+block_size_x=32, block_size_y=16, tile_size_x=1, tile_size_y=2, time=89.907ms, GFLOP/s=1528.674
+block_size_x=32, block_size_y=16, tile_size_x=2, tile_size_y=2, time=63.258ms, GFLOP/s=2172.676
+block_size_x=32, block_size_y=16, tile_size_x=4, tile_size_y=2, time=49.298ms, GFLOP/s=2787.910
+block_size_x=32, block_size_y=16, tile_size_x=8, tile_size_y=2, time=41.383ms, GFLOP/s=3321.127
+block_size_x=32, block_size_y=32, tile_size_x=1, tile_size_y=1, time=125.816ms, GFLOP/s=1092.377
+block_size_x=32, block_size_y=32, tile_size_x=2, tile_size_y=1, time=92.350ms, GFLOP/s=1488.248
+block_size_x=32, block_size_y=32, tile_size_x=4, tile_size_y=1, time=75.351ms, GFLOP/s=1823.973
+block_size_x=32, block_size_y=32, tile_size_x=8, tile_size_y=1, time=66.477ms, GFLOP/s=2067.472
+block_size_x=64, block_size_y=8, tile_size_x=1, tile_size_y=8, time=64.318ms, GFLOP/s=2136.861
+block_size_x=64, block_size_y=8, tile_size_x=2, tile_size_y=8, time=38.885ms, GFLOP/s=3534.473
+skipping config 64_8_4_8 reason: too much shared memory used
+skipping config 64_8_8_8 reason: too much shared memory used
+block_size_x=64, block_size_y=16, tile_size_x=1, tile_size_y=4, time=71.619ms, GFLOP/s=1919.020
+block_size_x=64, block_size_y=16, tile_size_x=2, tile_size_y=4, time=44.849ms, GFLOP/s=3064.467
+skipping config 64_16_4_4 reason: too much shared memory used
+skipping config 64_16_8_4 reason: too much shared memory used
+best performing configuration:
+block_size_x=32, block_size_y=4, tile_size_x=8, tile_size_y=8, time=24.418ms, GFLOP/s=5628.655
+Done
+---------------------------------------------------------------------
+
+
+---------------------------------------------------------------------
+Running tiling bvanwerkhoven extension to rectangular matrix (double precision)...
+Using: NVIDIA RTX A4000
+block_size_x=16, block_size_y=2, tile_size_x=1, tile_size_y=8, time=412.613ms, GFLOP/s=333.094
+block_size_x=16, block_size_y=2, tile_size_x=2, tile_size_y=8, time=407.241ms, GFLOP/s=337.488
+block_size_x=16, block_size_y=2, tile_size_x=4, tile_size_y=8, time=404.530ms, GFLOP/s=339.750
+block_size_x=16, block_size_y=2, tile_size_x=8, tile_size_y=8, time=402.399ms, GFLOP/s=341.549
+block_size_x=16, block_size_y=4, tile_size_x=1, tile_size_y=4, time=415.788ms, GFLOP/s=330.550
+block_size_x=16, block_size_y=4, tile_size_x=2, tile_size_y=4, time=407.805ms, GFLOP/s=337.021
+block_size_x=16, block_size_y=4, tile_size_x=4, tile_size_y=4, time=405.313ms, GFLOP/s=339.093
+block_size_x=16, block_size_y=4, tile_size_x=8, tile_size_y=4, time=399.635ms, GFLOP/s=343.911
+block_size_x=16, block_size_y=8, tile_size_x=1, tile_size_y=2, time=421.539ms, GFLOP/s=326.041
+block_size_x=16, block_size_y=8, tile_size_x=2, tile_size_y=2, time=408.456ms, GFLOP/s=336.484
+block_size_x=16, block_size_y=8, tile_size_x=4, tile_size_y=2, time=407.119ms, GFLOP/s=337.589
+block_size_x=16, block_size_y=8, tile_size_x=8, tile_size_y=2, time=401.491ms, GFLOP/s=342.321
+block_size_x=16, block_size_y=16, tile_size_x=1, tile_size_y=1, time=430.202ms, GFLOP/s=319.476
+block_size_x=16, block_size_y=16, tile_size_x=2, tile_size_y=1, time=415.381ms, GFLOP/s=330.874
+block_size_x=16, block_size_y=16, tile_size_x=4, tile_size_y=1, time=410.456ms, GFLOP/s=334.845
+block_size_x=16, block_size_y=16, tile_size_x=8, tile_size_y=1, time=406.316ms, GFLOP/s=338.257
+block_size_x=32, block_size_y=4, tile_size_x=1, tile_size_y=8, time=396.254ms, GFLOP/s=346.846
+block_size_x=32, block_size_y=4, tile_size_x=2, tile_size_y=8, time=393.999ms, GFLOP/s=348.831
+block_size_x=32, block_size_y=4, tile_size_x=4, tile_size_y=8, time=406.683ms, GFLOP/s=337.951
+skipping config 32_4_8_8 reason: too much shared memory used
+block_size_x=32, block_size_y=8, tile_size_x=1, tile_size_y=4, time=393.868ms, GFLOP/s=348.946
+block_size_x=32, block_size_y=8, tile_size_x=2, tile_size_y=4, time=394.202ms, GFLOP/s=348.651
+block_size_x=32, block_size_y=8, tile_size_x=4, tile_size_y=4, time=396.974ms, GFLOP/s=346.216
+skipping config 32_8_8_4 reason: too much shared memory used
+block_size_x=32, block_size_y=16, tile_size_x=1, tile_size_y=2, time=397.286ms, GFLOP/s=345.945
+block_size_x=32, block_size_y=16, tile_size_x=2, tile_size_y=2, time=394.766ms, GFLOP/s=348.153
+block_size_x=32, block_size_y=16, tile_size_x=4, tile_size_y=2, time=396.670ms, GFLOP/s=346.482
+skipping config 32_16_8_2 reason: too much shared memory used
+block_size_x=32, block_size_y=32, tile_size_x=1, tile_size_y=1, time=431.957ms, GFLOP/s=318.177
+block_size_x=32, block_size_y=32, tile_size_x=2, tile_size_y=1, time=413.996ms, GFLOP/s=331.981
+block_size_x=32, block_size_y=32, tile_size_x=4, tile_size_y=1, time=407.767ms, GFLOP/s=337.053
+skipping config 32_32_8_1 reason: too much shared memory used
+skipping config 64_8_1_8 reason: too much shared memory used
+skipping config 64_8_2_8 reason: too much shared memory used
+skipping config 64_8_4_8 reason: too much shared memory used
+skipping config 64_8_8_8 reason: too much shared memory used
+skipping config 64_16_1_4 reason: too much shared memory used
+skipping config 64_16_2_4 reason: too much shared memory used
+skipping config 64_16_4_4 reason: too much shared memory used
+skipping config 64_16_8_4 reason: too much shared memory used
+best performing configuration:
+block_size_x=32, block_size_y=8, tile_size_x=1, tile_size_y=4, time=393.868ms, GFLOP/s=348.946
+Done
+---------------------------------------------------------------------
+
+
+---------------------------------------------------------------------
+Running tiling bvanwerkhoven extension to rectangular matrix (single precision)...
+Using: NVIDIA RTX A4000
+block_size_x=16, block_size_y=2, tile_size_x=1, tile_size_y=8, time=86.718ms, GFLOP/s=1584.892
+block_size_x=16, block_size_y=2, tile_size_x=2, tile_size_y=8, time=57.347ms, GFLOP/s=2396.611
+block_size_x=16, block_size_y=2, tile_size_x=4, tile_size_y=8, time=39.649ms, GFLOP/s=3466.359
+block_size_x=16, block_size_y=2, tile_size_x=8, tile_size_y=8, time=34.203ms, GFLOP/s=4018.284
+block_size_x=16, block_size_y=4, tile_size_x=1, tile_size_y=4, time=92.571ms, GFLOP/s=1484.690
+block_size_x=16, block_size_y=4, tile_size_x=2, tile_size_y=4, time=62.437ms, GFLOP/s=2201.228
+block_size_x=16, block_size_y=4, tile_size_x=4, tile_size_y=4, time=47.165ms, GFLOP/s=2914.009
+block_size_x=16, block_size_y=4, tile_size_x=8, tile_size_y=4, time=38.903ms, GFLOP/s=3532.833
+block_size_x=16, block_size_y=8, tile_size_x=1, tile_size_y=2, time=105.945ms, GFLOP/s=1297.273
+block_size_x=16, block_size_y=8, tile_size_x=2, tile_size_y=2, time=74.889ms, GFLOP/s=1835.240
+block_size_x=16, block_size_y=8, tile_size_x=4, tile_size_y=2, time=59.727ms, GFLOP/s=2301.133
+block_size_x=16, block_size_y=8, tile_size_x=8, tile_size_y=2, time=51.764ms, GFLOP/s=2655.125
+block_size_x=16, block_size_y=16, tile_size_x=1, tile_size_y=1, time=131.424ms, GFLOP/s=1045.770
+block_size_x=16, block_size_y=16, tile_size_x=2, tile_size_y=1, time=99.718ms, GFLOP/s=1378.271
+block_size_x=16, block_size_y=16, tile_size_x=4, tile_size_y=1, time=83.542ms, GFLOP/s=1645.153
+block_size_x=16, block_size_y=16, tile_size_x=8, tile_size_y=1, time=75.402ms, GFLOP/s=1822.743
+block_size_x=32, block_size_y=4, tile_size_x=1, tile_size_y=8, time=72.059ms, GFLOP/s=1907.303
+block_size_x=32, block_size_y=4, tile_size_x=2, tile_size_y=8, time=45.487ms, GFLOP/s=3021.499
+block_size_x=32, block_size_y=4, tile_size_x=4, tile_size_y=8, time=32.653ms, GFLOP/s=4209.020
+block_size_x=32, block_size_y=4, tile_size_x=8, tile_size_y=8, time=26.803ms, GFLOP/s=5127.664
+block_size_x=32, block_size_y=8, tile_size_x=1, tile_size_y=4, time=77.512ms, GFLOP/s=1773.138
+block_size_x=32, block_size_y=8, tile_size_x=2, tile_size_y=4, time=50.750ms, GFLOP/s=2708.139
+block_size_x=32, block_size_y=8, tile_size_x=4, tile_size_y=4, time=37.175ms, GFLOP/s=3697.042
+block_size_x=32, block_size_y=8, tile_size_x=8, tile_size_y=4, time=29.079ms, GFLOP/s=4726.461
+block_size_x=32, block_size_y=16, tile_size_x=1, tile_size_y=2, time=89.456ms, GFLOP/s=1536.385
+block_size_x=32, block_size_y=16, tile_size_x=2, tile_size_y=2, time=62.978ms, GFLOP/s=2182.336
+block_size_x=32, block_size_y=16, tile_size_x=4, tile_size_y=2, time=49.185ms, GFLOP/s=2794.318
+block_size_x=32, block_size_y=16, tile_size_x=8, tile_size_y=2, time=41.085ms, GFLOP/s=3345.225
+block_size_x=32, block_size_y=32, tile_size_x=1, tile_size_y=1, time=125.589ms, GFLOP/s=1094.354
+block_size_x=32, block_size_y=32, tile_size_x=2, tile_size_y=1, time=92.068ms, GFLOP/s=1492.806
+block_size_x=32, block_size_y=32, tile_size_x=4, tile_size_y=1, time=74.371ms, GFLOP/s=1848.008
+block_size_x=32, block_size_y=32, tile_size_x=8, tile_size_y=1, time=66.434ms, GFLOP/s=2068.809
+block_size_x=64, block_size_y=8, tile_size_x=1, tile_size_y=8, time=64.167ms, GFLOP/s=2141.898
+block_size_x=64, block_size_y=8, tile_size_x=2, tile_size_y=8, time=38.935ms, GFLOP/s=3529.987
+skipping config 64_8_4_8 reason: too much shared memory used
+skipping config 64_8_8_8 reason: too much shared memory used
+block_size_x=64, block_size_y=16, tile_size_x=1, tile_size_y=4, time=71.117ms, GFLOP/s=1932.571
+block_size_x=64, block_size_y=16, tile_size_x=2, tile_size_y=4, time=44.657ms, GFLOP/s=3077.652
+skipping config 64_16_4_4 reason: too much shared memory used
+skipping config 64_16_8_4 reason: too much shared memory used
+best performing configuration:
+block_size_x=32, block_size_y=4, tile_size_x=8, tile_size_y=8, time=26.803ms, GFLOP/s=5127.664
+Done
+---------------------------------------------------------------------
+

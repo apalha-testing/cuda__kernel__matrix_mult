@@ -59,10 +59,13 @@ tune_params = dict()
 tune_params["block_size_x"] = [8, 16, 32]
 tune_params["block_size_y"] = [32, 16, 8]
 
+metrics = OrderedDict()
+metrics["GFLOP/s"] = lambda p : (2*n_columns_A * n_columns_B * n_rows_A/1e9) / (p["time"] / 1e3)
+
 # Run kernel
 print('\n---------------------------------------------------------------------')
 print('Running naive matrix multiplication algorithm (double precision)...')
-results, env = kernel_tuner.tune_kernel(kernel_name, kernel_source, problem_size, arguments, tune_params, verbose=True)
+results, env = kernel_tuner.tune_kernel(kernel_name, kernel_source, problem_size, arguments, tune_params, verbose=True, metrics=metrics)
 print("Done")
 print('---------------------------------------------------------------------\n')
 
@@ -79,10 +82,13 @@ tune_params = dict()
 tune_params["block_size_x"] = [8, 16, 32]
 tune_params["block_size_y"] = [32, 16, 8]
 
+metrics = OrderedDict()
+metrics["GFLOP/s"] = lambda p : (2*n_columns_A * n_columns_B * n_rows_A/1e9) / (p["time"] / 1e3)
+
 # Run kernel
 print('\n---------------------------------------------------------------------')
 print('Running naive matrix multiplication algorithm (single precision)...')
-results, env  = kernel_tuner.tune_kernel(kernel_name, kernel_source, problem_size, arguments, tune_params, verbose=True)
+results, env  = kernel_tuner.tune_kernel(kernel_name, kernel_source, problem_size, arguments, tune_params, verbose=True, metrics=metrics)
 print("Done")
 print('---------------------------------------------------------------------\n')
 
@@ -101,10 +107,13 @@ tune_params["block_size_x"] = [4, 8, 16, 32]
 tune_params["block_size_y"] = [4, 8, 16, 32]
 restrict = ["block_size_x==block_size_y", "TILE_SIZE==block_size_x"]
 
+metrics = OrderedDict()
+metrics["GFLOP/s"] = lambda p : (2*n_columns_A * n_columns_B * n_rows_A/1e9) / (p["time"] / 1e3)
+
 # %% Run kernel
 print('\n---------------------------------------------------------------------')
 print('Running tiling algorithm (double precision)...')
-results, env = kernel_tuner.tune_kernel(kernel_name, kernel_source, problem_size, arguments, tune_params, verbose=True, restrictions=restrict)
+results, env = kernel_tuner.tune_kernel(kernel_name, kernel_source, problem_size, arguments, tune_params, verbose=True, restrictions=restrict, metrics=metrics)
 print("Done")
 print('---------------------------------------------------------------------\n')
 
@@ -123,10 +132,13 @@ tune_params["block_size_x"] = [4, 8, 16, 32]
 tune_params["block_size_y"] = [4, 8, 16, 32]
 restrict = ["block_size_x==block_size_y", "TILE_SIZE==block_size_x"]
 
+metrics = OrderedDict()
+metrics["GFLOP/s"] = lambda p : (2*n_columns_A * n_columns_B * n_rows_A/1e9) / (p["time"] / 1e3)
+
 # %% Run kernel
 print('\n---------------------------------------------------------------------')
 print('Running tiling algorithm (single precision)...')
-results, env = kernel_tuner.tune_kernel(kernel_name, kernel_source, problem_size, arguments, tune_params, verbose=True, restrictions=restrict)
+results, env = kernel_tuner.tune_kernel(kernel_name, kernel_source, problem_size, arguments, tune_params, verbose=True, restrictions=restrict, metrics=metrics)
 print("Done")
 print('---------------------------------------------------------------------\n')
 
@@ -148,10 +160,13 @@ tune_params["VECTOR_SIZE"] = [4]
 grid_div_x = ["TILE_SIZE*4"]
 grid_div_y = ["TILE_SIZE"]
 
+metrics = OrderedDict()
+metrics["GFLOP/s"] = lambda p : (2*n_columns_A * n_columns_B * n_rows_A/1e9) / (p["time"] / 1e3)
+
 # %% Run kernel
 print('\n---------------------------------------------------------------------')
 print('Running tiling algorithm optimization 1 (double precision)...')
-results, env = kernel_tuner.tune_kernel(kernel_name, kernel_source, problem_size, arguments, tune_params, grid_div_x = grid_div_x, grid_div_y = grid_div_y, verbose=True)
+results, env = kernel_tuner.tune_kernel(kernel_name, kernel_source, problem_size, arguments, tune_params, grid_div_x = grid_div_x, grid_div_y = grid_div_y, verbose=True, metrics=metrics)
 print("Done")
 print('---------------------------------------------------------------------\n')
 
@@ -173,10 +188,13 @@ tune_params["VECTOR_SIZE"] = [4]
 grid_div_x = ["TILE_SIZE*4"]
 grid_div_y = ["TILE_SIZE"]
 
+metrics = OrderedDict()
+metrics["GFLOP/s"] = lambda p : (2*n_columns_A * n_columns_B * n_rows_A/1e9) / (p["time"] / 1e3)
+
 # %% Run kernel
 print('\n---------------------------------------------------------------------')
 print('Running tiling algorithm optimization 1 (single precision)...')
-results, env = kernel_tuner.tune_kernel(kernel_name, kernel_source, problem_size, arguments, tune_params, grid_div_x = grid_div_x, grid_div_y = grid_div_y, verbose=True)
+results, env = kernel_tuner.tune_kernel(kernel_name, kernel_source, problem_size, arguments, tune_params, grid_div_x = grid_div_x, grid_div_y = grid_div_y, verbose=True, metrics=metrics)
 print("Done")
 print('---------------------------------------------------------------------\n')
 
@@ -199,10 +217,13 @@ tune_params["VECTOR_SIZE"] = [4]
 grid_div_x = ["TILE_SIZE*4"]
 grid_div_y = ["TILE_SIZE"]
 
+metrics = OrderedDict()
+metrics["GFLOP/s"] = lambda p : (2*n_columns_A * n_columns_B * n_rows_A/1e9) / (p["time"] / 1e3)
+
 # %% Run kernel
 print('\n---------------------------------------------------------------------')
 print('Running tiling algorithm optimization 2 (double precision)...')
-results, env = kernel_tuner.tune_kernel(kernel_name, kernel_source, problem_size, arguments, tune_params, grid_div_x = grid_div_x, grid_div_y = grid_div_y, verbose=True)
+results, env = kernel_tuner.tune_kernel(kernel_name, kernel_source, problem_size, arguments, tune_params, grid_div_x = grid_div_x, grid_div_y = grid_div_y, verbose=True, metrics=metrics)
 print("Done")
 print('---------------------------------------------------------------------\n')
 
@@ -264,6 +285,9 @@ answer = [numpy.dot(A_square, B_square), None, None]
 metrics = OrderedDict()
 metrics["GFLOP/s"] = lambda p : (2*4096**3/1e9) / (p["time"] / 1e3)
 
+print('\n---------------------------------------------------------------------')
+print('Running tiling bvanwerkhoven square matrix (single precision)...')
+
 res, env = kernel_tuner.tune_kernel("matmul_kernel", "../cu/matrix_mult_square_matrix_reference_single.cu",
         problem_size, args, tune_params,
         grid_div_y=grid_div_y, grid_div_x=grid_div_x,
@@ -274,7 +298,45 @@ print('---------------------------------------------------------------------\n')
 
 
 
-# %% Reference Implementation from bvanwekhoven adapted for rectangular matrices
+# %% Reference Implementation from bvanwekhoven adapted for rectangular matrices (double precision)
+# Setup kernel
+problem_size = (n_columns_D, n_rows_D)
+
+arguments = [D_kernel_double, A_double, B_double, n_columns_A, n_columns_B, n_rows_A]
+
+tune_params = OrderedDict()
+tune_params["block_size_x"] = [16*2**i for i in range(3)]
+tune_params["block_size_y"] = [2**i for i in range(6)]
+
+tune_params["tile_size_x"] = [2**i for i in range(4)]
+tune_params["tile_size_y"] = [2**i for i in range(4)]
+
+grid_div_x = ["block_size_x", "tile_size_x"]
+grid_div_y = ["block_size_y", "tile_size_y"]
+
+restrict = ["block_size_x==block_size_y*tile_size_y"]
+
+answer = [numpy.dot(A_double, B_double), None, None]
+
+metrics = OrderedDict()
+metrics["GFLOP/s"] = lambda p : (2*n_columns_A * n_columns_B * n_rows_A/1e9) / (p["time"] / 1e3)
+
+kernel_name = "matrix_mult_bvanwerkhoven_rectangular_double"
+kernel_source = "../cu/matrix_mult_bvanwerkhoven_rectangular_double.cu"
+
+print('\n---------------------------------------------------------------------')
+print('Running tiling bvanwerkhoven extension to rectangular matrix (double precision)...')
+res, env = kernel_tuner.tune_kernel(kernel_name, kernel_source,
+        problem_size, arguments, tune_params,
+        grid_div_y=grid_div_y, grid_div_x=grid_div_x,
+        restrictions=restrict, verbose=True, iterations=32, metrics=metrics)
+
+print("Done")
+print('---------------------------------------------------------------------\n')
+
+
+
+# %% Reference Implementation from bvanwekhoven adapted for rectangular matrices (single precision)
 # Setup kernel
 problem_size = (n_columns_D, n_rows_D)
 
@@ -300,6 +362,8 @@ metrics["GFLOP/s"] = lambda p : (2*n_columns_A * n_columns_B * n_rows_A/1e9) / (
 kernel_name = "matrix_mult_bvanwerkhoven_rectangular_single"
 kernel_source = "../cu/matrix_mult_bvanwerkhoven_rectangular_single.cu"
 
+print('\n---------------------------------------------------------------------')
+print('Running tiling bvanwerkhoven extension to rectangular matrix (single precision)...')
 res, env = kernel_tuner.tune_kernel(kernel_name, kernel_source,
         problem_size, arguments, tune_params,
         grid_div_y=grid_div_y, grid_div_x=grid_div_x,

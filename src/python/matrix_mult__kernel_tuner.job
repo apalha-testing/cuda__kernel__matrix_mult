@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH --time=00:15:00
+#SBATCH --time=01:15:00
 #SBATCH -N 1
 #SBATCH --ntasks-per-node=16
 #SBATCH -C A4000
 #SBATCH --gres=gpu:1
-#BLABLASBATCH -p fatq
+#adasSBATCH -p fatq
 
 . /etc/bashrc
 . /etc/profile.d/lmod.sh
